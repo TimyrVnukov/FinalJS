@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="createCard">
+        <div class="layers">
+            <div class="layer">1</div>
+            <div class="layer">2</div>
+            <div class="layer">3</div>
+            <div class="layer">4</div>
+            <div class="layer">5</div>
+        </div>
+        <div class="choiseParking">
+            <div class="content">
+                <div class="left">
+                    <button id="parking1" class="parkingPlaceLeft"></button>
+                    <button id="parking2" class="parkingPlaceRight"></button>
+                    <button id="parking3" class="parkingPlaceLeft"></button>
+                    <button id="parking4" class="parkingPlaceRight"></button>
+                    <button id="parking5" class="parkingPlaceLeft"></button>
+                    <button id="parking6" class="parkingPlaceRight"></button>
+                    <button id="parking7" class="parkingPlaceLeft"></button>
+                    <button id="parking8" class="parkingPlaceRight"></button>
+                    <button id="parking9" class="parkingPlaceLeft"></button>
+                    <button id="parking10" class="parkingPlaceRight"></button>
+                    <button id="parking11" class="parkingPlaceLeft"></button>
+                    <button id="parking12" class="parkingPlaceRight"></button>
+                </div>
+                <div class="center">
+                    <b>Виїзд</b>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <div class="slash">|</div>
+                    <b>Виїзд</b>
+                </div>
+                <div class="right">
+                    <button id="parking13" class="parkingPlaceLeft"></button>
+                    <button id="parking14" class="parkingPlaceRight"></button>
+                    <button id="parking15" class="parkingPlaceLeft"></button>
+                    <button id="parking16" class="parkingPlaceRight"></button>
+                    <button id="parking17" class="parkingPlaceLeft"></button>
+                    <button id="parking18" class="parkingPlaceRight"></button>
+                    <button id="parking19" class="parkingPlaceLeft"></button>
+                    <button id="parking20" class="parkingPlaceRight"></button>
+                    <button id="parking21" class="parkingPlaceLeft"></button>
+                    <button id="parking22" class="parkingPlaceRight"></button>
+                    <button id="parking23" class="parkingPlaceLeft"></button>
+                    <button id="parking24" class="parkingPlaceRight"></button>
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <div class="content">
+                <div>
+                    <br>
+                    <h2 style="margin-left: 20px;color:white;">Паркін місце</h2>
+                    <div class="place">
+                        <p>A1000</p>
+                        <p>1 поверх</p>
+                    </div>
+                    <br>
+                    <p id="isFreePlace" style="text-align: center;">Зайняте</p>
+                    <br>
+                    <div id="autoInfo" class="info">
+                        <p>Номерний знак</p>
+                        <p id="InfoAutoNumber">XX0000XX</p>
+                    </div>
+                </div>
+                <div id="inputs" class="inputs">
+                    <b>Ім'я</b>
+                    <input type="text" id="name">
+                    <b>Призвище</b>
+                    <input type="text" id="secondname">
+                    <b>Марка авто</b>
+                    <input type="text" id="autoMark">
+                    <b>Тип авто</b>
+                    <div class="radios">
+                        <p><input name="auto" type="radio" value="cargo">Вантажне</p>
+                        <p><input name="auto" type="radio" value="passenger" checked>Легкове</p>
+                        <p><input name="auto" type="radio" value="bike">Мопед/Скутер</p>
+                    </div>
+                    <b>Номерний знак</b>
+                    <input type="text" id="autoNumber">
+                    <button id="createCardsend">Відправити</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" async>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+        const firebaseConfig = {
+          apiKey: "AIzaSyAnvDRKFKvqZkWI5n88svY1DHJIdoaL4Fo",
+          authDomain: "jsexemarduino.firebaseapp.com",
+          databaseURL: "https://jsexemarduino-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "jsexemarduino",
+          storageBucket: "jsexemarduino.appspot.com",
+          messagingSenderId: "924946567662",
+          appId: "1:924946567662:web:35a77e4ddd384e5060feff"
+        };
+        const app = initializeApp(firebaseConfig);
+        import {getDatabase, ref, set, get, child, update, remove, onChildChanged}
+        from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js"
+        const db = getDatabase();
+        const dbref = ref(db);
+
+        class ParkingPlace {
+            constructor(id, name, secondname, autoMark, auto, autoNumber, isInPaking) {
+                this.id = id;
+                this.name = name;
+                this.secondname = secondname;
+                this.autoMark = autoMark;
+                this.auto = auto;
+                this.autoNumber = autoNumber;
+                this.isInPaking = isInPaking;
+            }
+        }
+        let ParkingPlaces = [];
+        let tmp_ParcingId = 0;
+        function parkingPlaceShowInfo(number) {
+            if(ParkingPlaces[number] == null) {
+                document.getElementById('autoInfo').style.display = 'none';
+                document.getElementById('isFreePlace').innerHTML = 'Вільне';
+                document.getElementById('inputs').style.display = 'flex';
+                tmp_ParcingId = number;
+            }
+            else {
+                document.getElementById('autoInfo').style.display = 'block';
+                document.getElementById('isFreePlace').innerHTML = 'Зайняте';
+                document.getElementById('inputs').style.display = 'none';
+                document.getElementById('InfoAutoNumber').innerHTML = ParkingPlaces[number].autoNumber;
+            }
+        }
+        parkingPlaceOnClick();
+        function parkingPlaceOnClick() {
+            for(let i = 1; i <= 24; i++){
+                get(child(dbref, "InParking/" + i)).then((snapshot)=>{
+                    if(snapshot.exists()){
+                        let park = document.getElementById('parking' + i);
+                        if(snapshot.val().auto == 'bike' && snapshot.val().isInPaking == false){
+                            park.style.backgroundImage = 'url(./img/motorbikeNone.png)';
+                        }
+                        else if(snapshot.val().auto == 'bike' && snapshot.val().isInPaking == true){
+                            park.style.backgroundImage = 'url(./img/motorbike.png)';
+                        }
+                        if(snapshot.val().auto == 'cargo' && snapshot.val().isInPaking == false){
+                            park.style.backgroundImage = 'url(./img/cargoNone.png)';
+                        }
+                        else if(snapshot.val().auto == 'cargo' && snapshot.val().isInPaking == true){
+                            park.style.backgroundImage = 'url(./img/cargo.png)';
+                        }
+                        if(snapshot.val().auto == 'passenger' && snapshot.val().isInPaking == false){
+                            park.style.backgroundImage = 'url(./img/sport-carNone.png)';
+                        }
+                        else if(snapshot.val().auto == 'passenger' && snapshot.val().isInPaking == true){
+                            park.style.backgroundImage = 'url(./img/sport-car.png)';
+                        }
+                        ParkingPlaces[i] = new ParkingPlace(i, snapshot.val().name, snapshot.val().secondname, snapshot.val().autoMark, snapshot.val().auto, snapshot.val().autonumber, snapshot.val().isInPaking);
+                    }
+                });
+
+                document.getElementById('parking' + i).onclick = function() { parkingPlaceShowInfo(i) };
+                
+            }
+            console.log(ParkingPlaces);
+        }
+        setInterval(() => { reset_isInParking(); }, 2000);
+        let lastCardEnter = "";
+        let LastCardId;
+        let Bool;
+        function reset_isInParking() {
+            get(child(dbref, "LastEnterCard")).then((snapshot)=>{
+                LastCardId = snapshot.val().id;
+                Bool = LastCardId.substr(0, 1);
+                LastCardId = LastCardId.substr(1, LastCardId.length - 2);
+                if(Bool == 'l') { Bool = false; }
+                else { Bool = true; }
+                for(let i = 0; i <= 24; i++) {
+                    get(child(dbref, "CardsUID/" + i)).then((snapshot)=>{
+                        if(snapshot.exists()){
+                            if(snapshot.val().UID == LastCardId && ParkingPlaces[i] != undefined){
+                                update(ref(db, "InParking/" + i),{
+                                    isInPaking: Bool
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            parkingPlaceOnClick();
+        }
+        function SendCreateCard() {
+            let createCard_name = document.getElementById('name').value;
+            let createCard_secondname = document.getElementById('secondname').value;
+            let createCard_autoMark = document.getElementById('autoMark').value;
+            let createCard_auto = document.querySelectorAll('input[name="auto"]');
+            for (const f of createCard_auto) {
+                if (f.checked) {
+                    createCard_auto = f.value;
+                }
+            }
+            let createCard_autoNumber = document.getElementById('autoNumber').value;
+            set(ref(db, "InParking/" + tmp_ParcingId),{
+                parkingid: tmp_ParcingId,
+                name: createCard_name,
+                secondname: createCard_secondname,
+                autoMark: createCard_autoMark,
+                auto: createCard_auto,
+                autonumber: createCard_autoNumber,
+                isInPaking: false
+            });
+        }
+        
+        document.getElementById('createCardsend').onclick = function() { SendCreateCard(); };
+    </script>
+</body>
+</html>

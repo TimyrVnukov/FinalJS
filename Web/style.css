@@ -1,0 +1,133 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+.createCard {
+    background-color: rgb(25, 25, 51);
+    height: 100vh;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+/*start - Layers - start*/
+.layers {
+    background-color: rgb(39, 39, 63);
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.layers .layer {
+    color: white;
+    background-color: rgb(25, 25, 51);
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*end - Layers - end*/
+
+/*start - choiseParking - start*/
+.choiseParking {
+    background-color: rgb(39, 39, 63);
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.choiseParking .content {
+    border: 2px solid rgb(145, 145, 145);
+    width: 1200px;
+    height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.choiseParking .content .left,
+.choiseParking .content .right {
+    width: 400px;
+    height: 600px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.choiseParking .content .left .parkingPlaceLeft,
+.choiseParking .content .right .parkingPlaceLeft{
+    background-size: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgb(39, 39, 63);
+    border: 0px;
+    width: 196px;
+    height: 98px;
+    border-right: 2px solid rgb(145, 145, 145);
+    border-bottom: 2px solid rgb(145, 145, 145);
+}
+.choiseParking .content .left .parkingPlaceRight,
+.choiseParking .content .right .parkingPlaceRight {
+    background-size: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgb(39, 39, 63);
+    border: 0px;
+    width: 196px;
+    height: 98px;
+    border-bottom: 2px solid rgb(145, 145, 145);
+}
+.choiseParking .content .center {
+    color: rgb(145, 145, 145);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+.choiseParking .content .slash{
+    font-size: 20px;
+    margin: 20px 0px;
+}
+/*end - choiseParking - end*/
+
+/*start - block - start*/
+.block {
+    background-color: rgb(39, 39, 63);
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.block .content .inputs {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+.block .content {
+    display: flex;
+    flex-direction: column;
+    color: rgb(209, 209, 209);
+    background-color: rgb(34, 34, 63);
+    width: 80%;
+    height: 500px;
+}
+.block .content .info {
+    margin-top: 70px;
+    text-align: center;
+}
+.block .content .place {
+    display: flex;
+    justify-content: space-around;
+}
+.block input {
+    text-align: center;
+}
+.radios {
+    display: flex;
+    justify-content: space-around;
+}
+/*end - block - end*/
